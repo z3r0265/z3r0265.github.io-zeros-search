@@ -3,36 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Engine with Kids Mode</title>
+    <title>z3r0265 Search Engine</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        header img {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .search-container {
+            width: 90%;
+            max-width: 600px;
+        }
+        .toggle-container {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
         }
         .search-results {
             margin-top: 20px;
         }
         .result-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             margin-bottom: 10px;
+            background-color: #fff;
         }
-        .toggle-container {
-            margin-bottom: 20px;
+        .result-item a {
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 18px;
+        }
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+        .result-item p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #555;
         }
     </style>
 </head>
 <body>
 
-    <h1>Search Engine</h1>
-    
-    <div class="toggle-container">
-        <label>
-            <input type="checkbox" id="kidsModeToggle" />
-            Enable Kids Mode
-        </label>
-    </div>
+    <header>
+        <!-- Fetch logo.png from the repository -->
+        <img src="logo.png" alt="Search Logo">
+        <h1>z3r0265 Search Engine</h1>
+    </header>
 
-    <input type="text" id="searchInput" placeholder="Search..." />
-    
-    <div id="searchResults" class="search-results"></div>
+    <div class="search-container">
+        <div class="toggle-container">
+            <label>
+                <input type="checkbox" id="kidsModeToggle" />
+                Enable Kids Mode
+            </label>
+        </div>
+        <input type="text" id="searchInput" placeholder="Search..." />
+        <div id="searchResults" class="search-results"></div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js"></script>
     <script>
@@ -41,28 +96,39 @@
             const searchInput = document.getElementById('searchInput');
             const searchResults = document.getElementById('searchResults');
 
-            let currentData = [];
+            // Embedded JSON data
+            const defaultData = [
+                { "title": "Google", "url": "https://google.com", "content": "Search the world's information." },
+                { "title": "YouTube", "url": "https://youtube.com", "content": "Watch and share videos." },
+                { "title": "Facebook", "url": "https://facebook.com", "content": "Connect with friends and the world." }
+            ];
+
+            const kidsData = [
+                { "title": "Khan Academy", "url": "https://khanacademy.org", "content": "Free online courses and lessons." },
+                { "title": "National Geographic Kids", "url": "https://kids.nationalgeographic.com", "content": "Explore fun and educational content for kids." },
+                { "title": "PBS Kids", "url": "https://pbskids.org", "content": "Educational games and videos for kids." }
+            ];
+
+            let currentData = defaultData;
             let index;
 
-            // Function to load JSON data
-            async function loadData(kidsMode) {
-                const file = kidsMode ? 'nonkidfriendlysearch.json' : 'search.json';
-                const response = await fetch(file);
-                currentData = await response.json();
+            // Function to initialize Lunr index
+            function initializeIndex(data) {
                 index = lunr(function() {
                     this.ref('url');
                     this.field('title');
                     this.field('content');
-                    currentData.forEach(doc => this.add(doc));
+                    data.forEach(doc => this.add(doc));
                 });
             }
 
-            // Load initial data (default: Kids Mode off)
-            loadData(false);
+            // Initialize with default data
+            initializeIndex(currentData);
 
             // Handle Kids Mode toggle
             kidsModeToggle.addEventListener('change', function() {
-                loadData(kidsModeToggle.checked);
+                currentData = kidsModeToggle.checked ? kidsData : defaultData;
+                initializeIndex(currentData);
                 searchInput.value = ''; // Clear the search input
                 searchResults.innerHTML = ''; // Clear the results
             });
