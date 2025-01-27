@@ -45,28 +45,41 @@
             margin-bottom: 20px;
             font-size: 16px;
         }
-        .search-results {
+        .search-results, .search-suggestions {
             margin-top: 20px;
+            width: 100%;
         }
-        .result-item {
+        .result-item, .suggestion-item {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-bottom: 10px;
             background-color: #fff;
         }
-        .result-item a {
+        .result-item a, .suggestion-item a {
             text-decoration: none;
             color: #007BFF;
             font-size: 18px;
         }
-        .result-item a:hover {
+        .result-item a:hover, .suggestion-item a:hover {
             text-decoration: underline;
         }
-        .result-item p {
+        .result-item p, .suggestion-item p {
             margin: 5px 0 0;
             font-size: 14px;
             color: #555;
+        }
+        .search-suggestions {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .suggestion-item {
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
@@ -86,6 +99,7 @@
             </label>
         </div>
         <input type="text" id="searchInput" placeholder="Search..." />
+        <div id="searchSuggestions" class="search-suggestions"></div>
         <div id="searchResults" class="search-results"></div>
     </div>
 
@@ -95,18 +109,30 @@
             const kidsModeToggle = document.getElementById('kidsModeToggle');
             const searchInput = document.getElementById('searchInput');
             const searchResults = document.getElementById('searchResults');
+            const searchSuggestions = document.getElementById('searchSuggestions');
 
-            // Embedded JSON data
+            // Expanded default data
             const defaultData = [
                 { "title": "Google", "url": "https://google.com", "content": "Search the world's information." },
                 { "title": "YouTube", "url": "https://youtube.com", "content": "Watch and share videos." },
-                { "title": "Facebook", "url": "https://facebook.com", "content": "Connect with friends and the world." }
+                { "title": "Facebook", "url": "https://facebook.com", "content": "Connect with friends and the world." },
+                { "title": "Amazon", "url": "https://amazon.com", "content": "Shop for millions of products." },
+                { "title": "Twitter", "url": "https://twitter.com", "content": "Share your thoughts with the world." },
+                { "title": "Reddit", "url": "https://reddit.com", "content": "Join discussions on thousands of topics." },
+                { "title": "Instagram", "url": "https://instagram.com", "content": "Share photos and videos with your followers." },
+                { "title": "Wikipedia", "url": "https://wikipedia.org", "content": "The free encyclopedia everyone can edit." },
+                { "title": "Netflix", "url": "https://netflix.com", "content": "Stream movies and TV shows." },
+                { "title": "BBC", "url": "https://bbc.com", "content": "Get the latest world news from the BBC." }
             ];
 
+            // Expanded kids' data
             const kidsData = [
                 { "title": "Khan Academy", "url": "https://khanacademy.org", "content": "Free online courses and lessons." },
                 { "title": "National Geographic Kids", "url": "https://kids.nationalgeographic.com", "content": "Explore fun and educational content for kids." },
-                { "title": "PBS Kids", "url": "https://pbskids.org", "content": "Educational games and videos for kids." }
+                { "title": "PBS Kids", "url": "https://pbskids.org", "content": "Educational games and videos for kids." },
+                { "title": "Disney Junior", "url": "https://disneyjunior.com", "content": "Fun and safe videos for young kids." },
+                { "title": "Sesame Street", "url": "https://sesamestreet.org", "content": "Educational videos and games for kids." },
+                { "title": "Nick Jr.", "url": "https://nickjr.com", "content": "Interactive games and videos for preschoolers." }
             ];
 
             let currentData = defaultData;
@@ -131,12 +157,14 @@
                 initializeIndex(currentData);
                 searchInput.value = ''; // Clear the search input
                 searchResults.innerHTML = ''; // Clear the results
+                searchSuggestions.innerHTML = ''; // Clear the suggestions
             });
 
             // Handle search input
             searchInput.addEventListener('input', function() {
                 const query = searchInput.value.trim();
                 if (query.length > 0) {
+                    // Search for results
                     const results = index.search(query);
                     searchResults.innerHTML = results.length > 0
                         ? results.map(result => {
@@ -144,8 +172,17 @@
                             return `<div class="result-item"><a href="${doc.url}"><strong>${doc.title}</strong></a><p>${doc.content}</p></div>`;
                         }).join('')
                         : '<p>No results found</p>';
+
+                    // Display search suggestions
+                    const suggestions = currentData.filter(doc => doc.title.toLowerCase().includes(query.toLowerCase()));
+                    searchSuggestions.innerHTML = suggestions.length > 0
+                        ? suggestions.map(suggestion => {
+                            return `<div class="suggestion-item" onclick="searchInput.value='${suggestion.title}';">${suggestion.title}</div>`;
+                        }).join('')
+                        : '<p>No suggestions available</p>';
                 } else {
                     searchResults.innerHTML = '';
+                    searchSuggestions.innerHTML = '';
                 }
             });
         });
