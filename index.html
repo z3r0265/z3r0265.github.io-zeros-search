@@ -3,190 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>z3r0265 Search Engine</title>
+    <title>ZERO's Search</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Verdana', sans-serif;
+            background-color: #C0C0C0; /* Windows 95 Gray Background */
+            color: black;
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            align-items: center;
+            height: 100vh;
         }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        header img {
-            width: 100px;
-            margin-bottom: 10px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
+
         .search-container {
-            width: 90%;
+            background-color: #F0F0F0; /* Light Gray for windows-like feel */
+            border: 2px solid #000080; /* Windows 95 Blue Border */
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            width: 100%;
             max-width: 600px;
-        }
-        .toggle-container {
-            margin-bottom: 10px;
             text-align: center;
         }
-        #searchInput {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+        .google-logo img {
+            max-width: 200px;
             margin-bottom: 20px;
-            font-size: 16px;
+            transition: all 0.3s ease;
         }
-        .search-results, .search-suggestions {
-            margin-top: 20px;
-            width: 100%;
-        }
-        .result-item, .suggestion-item {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            background-color: #fff;
-        }
-        .result-item a, .suggestion-item a {
-            text-decoration: none;
-            color: #007BFF;
-            font-size: 18px;
-        }
-        .result-item a:hover, .suggestion-item a:hover {
-            text-decoration: underline;
-        }
-        .result-item p, .suggestion-item p {
-            margin: 5px 0 0;
+
+        .search-input {
+            width: 80%;
+            padding: 5px;
             font-size: 14px;
-            color: #555;
+            border: 2px solid #000080;
+            border-radius: 3px;
+            background-color: white;
+            color: black;
+            margin-bottom: 10px;
+            outline: none;
         }
-        .search-suggestions {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+        .search-input:focus {
+            border-color: #800080; /* Purple Focus Border */
         }
-        .suggestion-item {
+
+        .search-buttons input {
+            background-color: #000080; /* Windows 95 Button Blue */
+            color: white;
+            padding: 5px 20px;
+            border: 2px solid #000080;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+
+        .search-buttons input:hover {
+            background-color: #800080; /* Hover effect with purple */
+        }
+
+        .radio-group {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .radio-group input {
+            margin-right: 5px;
+        }
+
+        .radio-group label {
+            font-size: 12px;
+            color: black;
+        }
+
+        .logo-toggle {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #000080;
+            color: white;
+            border: 2px solid #000080;
+            border-radius: 3px;
             cursor: pointer;
         }
-        .suggestion-item:hover {
-            background-color: #f1f1f1;
+
+        .logo-toggle:hover {
+            background-color: #800080;
+        }
+
+        .disclaimer {
+            font-size: 10px;
+            color: #ffcc00;
+            margin-top: 10px;
+        }
+
+        .windows95-start-button {
+            font-family: 'Verdana', sans-serif;
+            font-size: 12px;
+            background-color: #000080;
+            color: white;
+            border: 2px solid #000080;
+            padding: 5px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .windows95-start-button:hover {
+            background-color: #800080;
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <!-- Fetch logo.png from the repository -->
-        <img src="logo.png" alt="Search Logo">
-        <h1>z3r0265 Search Engine</h1>
-    </header>
-
     <div class="search-container">
-        <div class="toggle-container">
-            <label>
-                <input type="checkbox" id="kidsModeToggle" />
-                Enable Kids Mode
-            </label>
+        <div class="google-logo">
+            <a href="http://www.google.com/search">
+                <img id="google-logo" src="http://upload.wikimedia.org/wikipedia/commons/c/cd/Google_Logo_%281998%29.png" alt="Google">
+            </a>
         </div>
-        <input type="text" id="searchInput" placeholder="Search..." />
-        <div id="searchSuggestions" class="search-suggestions"></div>
-        <div id="searchResults" class="search-results"></div>
+        <div class="disclaimer">
+            If blocked search ignore, it's glitch.
+        </div>
+        <form method="GET" action="http://www.google.com/custom">
+            <input type="text" name="q" class="search-input" size="20" maxlength="255" placeholder="Search..." required>
+            <div class="search-buttons">
+                <input type="submit" name="sa" value="Search">
+            </div>
+            <input type="hidden" name="cof" value="T:#000000;LW:132;ALC:yellow;L:https://www.google.com/logos/1998/googlebeta.jpg;LH:90;BGC:#F9AA35;AH:center;VLC:blue;GL:0;AWFID:ac06c615d13fe59c;">
+            <input type="hidden" name="domains" value="websim.ai">
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="sitesearch" value="websim.ai" checked> Search Websim
+                </label>
+                <label>
+                    <input type="radio" name="sitesearch" value=""> Search The World Wide Web
+                </label>
+            </div>
+        </form>
+        <button class="logo-toggle" onclick="toggleLogo()">Toggle Logo</button>
+        <button class="windows95-start-button" onclick="alert('Windows 95 Start Menu!')">Start</button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const kidsModeToggle = document.getElementById('kidsModeToggle');
-            const searchInput = document.getElementById('searchInput');
-            const searchResults = document.getElementById('searchResults');
-            const searchSuggestions = document.getElementById('searchSuggestions');
-
-            // Expanded default data
-            const defaultData = [
-                { "title": "Google", "url": "https://google.com", "content": "Search the world's information." },
-                { "title": "YouTube", "url": "https://youtube.com", "content": "Watch and share videos." },
-                { "title": "Facebook", "url": "https://facebook.com", "content": "Connect with friends and the world." },
-                { "title": "Amazon", "url": "https://amazon.com", "content": "Shop for millions of products." },
-                { "title": "Twitter", "url": "https://twitter.com", "content": "Share your thoughts with the world." },
-                { "title": "Reddit", "url": "https://reddit.com", "content": "Join discussions on thousands of topics." },
-                { "title": "Instagram", "url": "https://instagram.com", "content": "Share photos and videos with your followers." },
-                { "title": "Wikipedia", "url": "https://wikipedia.org", "content": "The free encyclopedia everyone can edit." },
-                { "title": "Netflix", "url": "https://netflix.com", "content": "Stream movies and TV shows." },
-                { "title": "BBC", "url": "https://bbc.com", "content": "Get the latest world news from the BBC." }
-            ];
-
-            // Expanded kids' data
-            const kidsData = [
-                { "title": "Khan Academy", "url": "https://khanacademy.org", "content": "Free online courses and lessons." },
-                { "title": "National Geographic Kids", "url": "https://kids.nationalgeographic.com", "content": "Explore fun and educational content for kids." },
-                { "title": "PBS Kids", "url": "https://pbskids.org", "content": "Educational games and videos for kids." },
-                { "title": "Disney Junior", "url": "https://disneyjunior.com", "content": "Fun and safe videos for young kids." },
-                { "title": "Sesame Street", "url": "https://sesamestreet.org", "content": "Educational videos and games for kids." },
-                { "title": "Nick Jr.", "url": "https://nickjr.com", "content": "Interactive games and videos for preschoolers." }
-            ];
-
-            let currentData = defaultData;
-            let index;
-
-            // Function to initialize Lunr index
-            function initializeIndex(data) {
-                index = lunr(function() {
-                    this.ref('url');
-                    this.field('title');
-                    this.field('content');
-                    data.forEach(doc => this.add(doc));
-                });
+        function toggleLogo() {
+            var logo = document.getElementById("google-logo");
+            if (logo.src.includes("google_Logo_1998.png")) {
+                logo.src = "https://www.keyweo.com/wp-content/uploads/2021/09/1998.png";
+            } else {
+                logo.src = "http://upload.wikimedia.org/wikipedia/commons/c/cd/Google_Logo_%281998%29.png";
             }
+        }
 
-            // Initialize with default data
-            initializeIndex(currentData);
-
-            // Handle Kids Mode toggle
-            kidsModeToggle.addEventListener('change', function() {
-                currentData = kidsModeToggle.checked ? kidsData : defaultData;
-                initializeIndex(currentData);
-                searchInput.value = ''; // Clear the search input
-                searchResults.innerHTML = ''; // Clear the results
-                searchSuggestions.innerHTML = ''; // Clear the suggestions
-            });
-
-            // Handle search input
-            searchInput.addEventListener('input', function() {
-                const query = searchInput.value.trim();
-                if (query.length > 0) {
-                    // Search for results
-                    const results = index.search(query);
-                    searchResults.innerHTML = results.length > 0
-                        ? results.map(result => {
-                            const doc = currentData.find(d => d.url === result.ref);
-                            return `<div class="result-item"><a href="${doc.url}"><strong>${doc.title}</strong></a><p>${doc.content}</p></div>`;
-                        }).join('')
-                        : '<p>No results found</p>';
-
-                    // Display search suggestions
-                    const suggestions = currentData.filter(doc => doc.title.toLowerCase().includes(query.toLowerCase()));
-                    searchSuggestions.innerHTML = suggestions.length > 0
-                        ? suggestions.map(suggestion => {
-                            return `<div class="suggestion-item" onclick="searchInput.value='${suggestion.title}';">${suggestion.title}</div>`;
-                        }).join('')
-                        : '<p>No suggestions available</p>';
-                } else {
-                    searchResults.innerHTML = '';
-                    searchSuggestions.innerHTML = '';
-                }
-            });
-        });
+        // Change logo on Fridays
+        window.onload = function() {
+            var logo = document.getElementById("google-logo");
+            var today = new Date();
+            if (today.getDay() === 5) { // Check if it's Friday (getDay() returns 5 for Friday)
+                logo.src = "https://upload.wikimedia.org/wikipedia/commons/b/b9/First-google-logo.gif";
+                logo.style.display = "block";
+                logo.style.margin = "auto";
+                logo.style.backgroundColor = "hsl(0, 0%, 90%)";
+            } else {
+                logo.src = "http://upload.wikimedia.org/wikipedia/commons/c/cd/Google_Logo_%281998%29.png";
+            }
+        };
     </script>
-
 </body>
 </html>
